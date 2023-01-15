@@ -226,14 +226,15 @@ public class IntList {
         if (A == null) {
             return null;
         } else if (A.rest == null) {
-            return new IntList(A.first, null);
+            return A;
         } else {
             IntList B = reverse(A.rest);
             IntList p = B;
             while (p.rest != null) {
                 p = p.rest;
             }
-            p.rest = new IntList(A.first, null);
+            A.rest=null;
+            p.rest = A;
             return B;
         }
     }
