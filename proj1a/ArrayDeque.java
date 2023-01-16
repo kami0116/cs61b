@@ -19,9 +19,9 @@ public class ArrayDeque<T> {
         if (size == ARRAY_SIZE) {
             extend();
         }
-        int newFirstIndex=(firstIndex + ARRAY_SIZE - 1) % ARRAY_SIZE;
+        int newFirstIndex = (firstIndex + ARRAY_SIZE - 1) % ARRAY_SIZE;
         array[newFirstIndex] = item;
-        firstIndex=newFirstIndex;
+        firstIndex = newFirstIndex;
         size++;
     }
 
@@ -55,7 +55,7 @@ public class ArrayDeque<T> {
      */
     public void printDeque() {
         for (int i = 0; i < size; i++) {
-            System.out.println(array[(firstIndex+i)%ARRAY_SIZE]);
+            System.out.println(array[(firstIndex + i) % ARRAY_SIZE]);
         }
     }
 
@@ -73,19 +73,20 @@ public class ArrayDeque<T> {
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      */
     public T removeLast() {
-        T result = get(size-1);
+        T result = get(size - 1);
         size--;
         return result;
     }
 
     /**
-     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth. If no such item exists, returns null. Must not alter the deque!
+     * Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+     * If no such item exists, returns null. Must not alter the deque!
      */
     public T get(int index) {
-        if (index>=size){
+        if (index >= size) {
             throw new RuntimeException("index is out of range");
         }
-        return array[(firstIndex+index)%ARRAY_SIZE];
+        return array[(firstIndex + index) % ARRAY_SIZE];
     }
 
     private void extend() {
