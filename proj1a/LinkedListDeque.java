@@ -69,7 +69,7 @@ public class LinkedListDeque<T> {
      */
     public T removeFirst() {
         if (size == 0) {
-            throw new RuntimeException("deque is empty");
+            return null;
         }
         Node node = sentinel.next;
         sentinel.next = node.next;
@@ -83,7 +83,7 @@ public class LinkedListDeque<T> {
      */
     public T removeLast() {
         if (size == 0) {
-            throw new RuntimeException("deque is empty");
+            return null;
         }
         Node node = sentinel.prev;
         node.prev.next = sentinel;
@@ -97,7 +97,7 @@ public class LinkedListDeque<T> {
      * If no such item exists, returns null. Must not alter the deque!
      */
     public T get(int index) {
-        if (index > size) {
+        if (index >= size || index < 0) {
             throw new RuntimeException("index is out of range");
         }
         Node p = sentinel.next;
@@ -111,7 +111,7 @@ public class LinkedListDeque<T> {
      * Same as get, but uses recursion.
      */
     public T getRecursive(int index) {
-        if (index > size) {
+        if (index >= size || index < 0) {
             throw new RuntimeException("index is out of range");
         }
         return getHelper(index, sentinel.next).value;
