@@ -1,6 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.Field;
+
 import static org.junit.Assert.*;
 
 public class ArrayDequeTest {
@@ -34,17 +36,24 @@ public class ArrayDequeTest {
         deque.addFirst(3);
 
         assertEquals(3, deque.size());
-        assertEquals(1, (int) deque.get(0));
+        assertEquals(3, (int) deque.get(0));
     }
 
     @Test
-    public void testRemoveLast() {
-        deque.addFirst(4);
-        deque.addFirst(5);
-        deque.addFirst(6);
+    public void testRemoveLast() throws NoSuchFieldException, IllegalAccessException {
+        for (int i = 0; i < 100; i++) {
+            deque.addLast(i);
+        }
+        for (int i = 0; i < 50; i++) {
+            assertEquals(i, (int) deque.removeFirst());
+        }
+        for (int i = 100; i < 120; i++) {
+            deque.addLast(i);
+        }
 
-        assertEquals(4, (int) deque.removeLast());
-        assertEquals(2, deque.size());
+        for (int i = 0; i < deque.size(); i++) {
+            assertEquals(50 + i, (int) deque.get(i));
+        }
     }
 
     @Test
@@ -77,7 +86,28 @@ public class ArrayDequeTest {
         deque.removeFirst();
         deque.addLast(8);
         deque.addLast(9);
-        deque.printDeque();
+        for (int i = 0; i < deque.size(); i++) {
+            assertEquals(i + 1, (int) deque.get(i));
+        }
+    }
 
+    @Test
+    public void testResizing() throws Exception {
+        printArraySize();
+        for (int i = 0; i < 99; i++) {
+            deque.addLast(i);
+        }
+        printArraySize();
+        for (int i = 0; i < 99; i++) {
+            deque.removeFirst();
+        }
+        printArraySize();
+    }
+
+
+    private void printArraySize() throws NoSuchFieldException, IllegalAccessException {
+        Field arraySize = ArrayDeque.class.getDeclaredField("ARRAY_SIZE");
+        arraySize.setAccessible(true);
+        System.out.println("size=" + deque.size() + "\tarray size=" + arraySize.get(deque));
     }
 }

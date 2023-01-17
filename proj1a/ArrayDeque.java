@@ -69,6 +69,7 @@ public class ArrayDeque<T> {
         T first = array[firstIndex];
         firstIndex = (firstIndex + 1) % ARRAY_SIZE;
         size--;
+        checkAndShrink();
         return first;
     }
 
@@ -81,6 +82,7 @@ public class ArrayDeque<T> {
         }
         T result = array[(firstIndex + size - 1) % ARRAY_SIZE];
         size--;
+        checkAndShrink();
         return result;
     }
 
@@ -96,10 +98,24 @@ public class ArrayDeque<T> {
     }
 
     private void extend() {
-        int newArraySize = ARRAY_SIZE + ARRAY_SIZE / 2;
+        resize(ARRAY_SIZE / 2 * 3);
+    }
+
+    private void checkAndShrink() {
+        int newArraySize = ARRAY_SIZE / 3 * 2;
+        if (size < ARRAY_SIZE / 2 && newArraySize > INIT_ARRAY_SIZE) {
+            resize(newArraySize);
+        }
+    }
+
+    private void resize(int newArraySize) {
         T[] newArray = (T[]) new Object[newArraySize];
-        System.arraycopy(array, firstIndex, newArray, 0, size - firstIndex);
-        System.arraycopy(array, 0, newArray, size - firstIndex, firstIndex);
+        if (firstIndex + size > ARRAY_SIZE) {
+            System.arraycopy(array, firstIndex, newArray, 0, size - firstIndex);
+            System.arraycopy(array, 0, newArray, size - firstIndex, firstIndex);
+        } else {
+            System.arraycopy(array, firstIndex, newArray, 0, size);
+        }
         array = newArray;
         firstIndex = 0;
         ARRAY_SIZE = newArraySize;
