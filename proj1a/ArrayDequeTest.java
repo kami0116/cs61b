@@ -1,94 +1,83 @@
+import org.junit.Before;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
 public class ArrayDequeTest {
+    private ArrayDeque<Integer> deque;
 
-    /* Utility method for printing out empty checks. */
-    public static boolean checkEmpty(boolean expected, boolean actual) {
-        if (expected != actual) {
-            System.out.println("isEmpty() returned " + actual + ", but expected: " + expected);
-            return false;
+    @Before
+    public void setUp() {
+        deque = new ArrayDeque<>();
+    }
+
+    @Test
+    public void testInit() {
+        assertTrue(deque.isEmpty());
+        assertEquals(0, deque.size());
+    }
+
+    @Test
+    public void testAddLast() {
+        deque.addLast(5);
+        deque.addLast(6);
+        deque.addLast(7);
+
+        assertEquals(3, deque.size());
+        assertEquals(7, (int) deque.get(2));
+    }
+
+    @Test
+    public void testAddFront() {
+        deque.addFirst(1);
+        deque.addFirst(2);
+        deque.addFirst(3);
+
+        assertEquals(3, deque.size());
+        assertEquals(1, (int) deque.get(0));
+    }
+
+    @Test
+    public void testRemoveLast() {
+        deque.addFirst(4);
+        deque.addFirst(5);
+        deque.addFirst(6);
+
+        assertEquals(4, (int) deque.removeLast());
+        assertEquals(2, deque.size());
+    }
+
+    @Test
+    public void testRemoveFront() {
+        deque.addFirst(7);
+        deque.addFirst(8);
+        deque.addFirst(9);
+
+        assertEquals(9, (int) deque.removeFirst());
+        assertEquals(8, (int) deque.removeFirst());
+        assertEquals(7, (int) deque.removeFirst());
+        assertEquals(0, deque.size());
+    }
+
+    @Test
+    public void testDequeUnderflowRemoveFirst() {
+        assertNull(deque.removeFirst());
+    }
+
+    @Test
+    public void testDequeUnderflowRemoveLast() {
+        assertNull(deque.removeLast());
+    }
+
+    @Test
+    public void testDequeOverflowAddLast() {
+        for (int i = 0; i < 8; i++) {
+            deque.addLast(i);
         }
-        return true;
-    }
+        deque.removeFirst();
+        deque.addLast(8);
+        deque.addLast(9);
+        deque.printDeque();
 
-    /* Utility method for printing out empty checks. */
-    public static boolean checkSize(int expected, int actual) {
-        if (expected != actual) {
-            System.out.println("size() returned " + actual + ", but expected: " + expected);
-            return false;
-        }
-        return true;
-    }
-
-    /* Prints a nice message based on whether a test passed.
-     * The \n means newline. */
-    public static void printTestStatus(boolean passed) {
-        if (passed) {
-            System.out.println("Test passed!\n");
-        } else {
-            System.out.println("Test failed!\n");
-        }
-    }
-
-    /**
-     * Adds a few things to the list, checking isEmpty() and size() are correct,
-     * finally printing the results.
-     * <p>
-     * && is the "and" operation.
-     */
-    public static void addIsEmptySizeTest() {
-        System.out.println("Running add/isEmpty/Size test.");
-        System.out.println(
-                "Make sure to uncomment the lines below (and delete this print statement).");
-        ArrayDeque<String> lld1 = new ArrayDeque<String>();
-
-        boolean passed = checkEmpty(true, lld1.isEmpty());
-
-        lld1.addFirst("front");
-
-        // The && operator is the same as "and" in Python.
-        // It's a binary operator that returns true if both arguments true, and false otherwise.
-        passed = checkSize(1, lld1.size()) && passed;
-        passed = checkEmpty(false, lld1.isEmpty()) && passed;
-
-        lld1.addLast("middle");
-        passed = checkSize(2, lld1.size()) && passed;
-
-        lld1.addLast("back");
-        passed = checkSize(3, lld1.size()) && passed;
-
-        System.out.println("Printing out deque: ");
-        lld1.printDeque();
-
-        printTestStatus(passed);
-    }
-
-    /**
-     * Adds an item, then removes an item, and ensures that dll is empty afterwards.
-     */
-    public static void addRemoveTest() {
-
-        System.out.println("Running add/remove test.");
-
-        System.out.println(
-                "Make sure to uncomment the lines below (and delete this print statement).");
-
-        ArrayDeque<Integer> lld1 = new ArrayDeque<Integer>();
-        // should be empty
-        boolean passed = checkEmpty(true, lld1.isEmpty());
-
-        lld1.addFirst(10);
-        // should not be empty
-        passed = checkEmpty(false, lld1.isEmpty()) && passed;
-
-        lld1.removeFirst();
-        // should be empty
-        passed = checkEmpty(true, lld1.isEmpty()) && passed;
-
-        printTestStatus(passed);
-    }
-
-    public static void main(String[] args) {
-        System.out.println("Running tests.\n");
-        addIsEmptySizeTest();
-        addRemoveTest();
     }
 }

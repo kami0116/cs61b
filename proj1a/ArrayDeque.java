@@ -63,6 +63,9 @@ public class ArrayDeque<T> {
      * Removes and returns the item at the front of the deque. If no such item exists, returns null.
      */
     public T removeFirst() {
+        if (size == 0) {
+            return null;
+        }
         T first = array[firstIndex];
         firstIndex = (firstIndex + 1) % ARRAY_SIZE;
         size--;
@@ -73,7 +76,10 @@ public class ArrayDeque<T> {
      * Removes and returns the item at the back of the deque. If no such item exists, returns null.
      */
     public T removeLast() {
-        T result = get(size - 1);
+        if (size == 0) {
+            return null;
+        }
+        T result = array[(firstIndex + size - 1) % ARRAY_SIZE];
         size--;
         return result;
     }
@@ -92,8 +98,10 @@ public class ArrayDeque<T> {
     private void extend() {
         int newArraySize = ARRAY_SIZE + ARRAY_SIZE / 2;
         T[] newArray = (T[]) new Object[newArraySize];
-        System.arraycopy(array, 0, newArray, 0, size);
+        System.arraycopy(array, firstIndex, newArray, 0, size - firstIndex);
+        System.arraycopy(array, 0, newArray, size - firstIndex, firstIndex);
         array = newArray;
+        firstIndex = 0;
         ARRAY_SIZE = newArraySize;
     }
 }
