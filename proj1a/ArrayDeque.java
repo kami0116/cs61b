@@ -102,8 +102,8 @@ public class ArrayDeque<T> {
     }
 
     private void checkAndShrink() {
-        int newArraySize = ARRAY_SIZE / 3 * 2;
-        if (size < ARRAY_SIZE / 2 && newArraySize > INIT_ARRAY_SIZE) {
+        int newArraySize = ARRAY_SIZE / 3;
+        if (size < ARRAY_SIZE / 5 && newArraySize > INIT_ARRAY_SIZE) {
             resize(newArraySize);
         }
     }
